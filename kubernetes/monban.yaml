@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: monban
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: monban
+rules:
+- apiGroups: [""]
+  resources:
+  - namespaces
+  verbs:
+  - get
+  - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: monban
+subjects:
+- kind: ServiceAccount
+  name: monban
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: monban
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: monban-certs
+  namespace: default
+type: Opaque
+data:
+  ca.pem: __CA__
+  webhook.pem: __TLS_CERT__
+  webhook-key.pem: __TLS_KEY__
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: monban
+  name: monban
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: monban
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: monban
+      name: monban
+    spec:
+      containers:
+      - image: quay.io/koudaiii/monban:v0.1.0
+        name: monban
+        imagePullPolicy: Always
+        command: ["/webhook"]
+        ports:
+          - containerPort: 443
+        args:
+         - --tls-ca-file=/etc/certs/ca.pem
+         - --tls-cert-file=/etc/certs/webhook.pem
+         - --tls-key-file=/etc/certs/webhook-key.pem
+        volumeMounts:
+        - name: certs
+          mountPath: /etc/certs
+          readOnly: true
+      serviceAccount: monban
+      volumes:
+        - name: certs
+          secret:
+            secretName: monban-certs
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: monban
+  namespace: default
+spec:
+  selector:
+    app: monban
+  ports:
+    - protocol: TCP
+      port: 443
+      targetPort: 443
