@@ -1,0 +1,23 @@
+{
+  "CN": "monban.default.svc",
+  "hosts": [
+    "127.0.0.1",
+    "monban",
+    "monban.default",
+    "monban.default",
+    "monban.default.svc"
+  ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "JP",
+      "L": "Japan",
+      "O": "koudaii.com",
+      "OU": "Admission Webhook",
+      "ST": "Japan"
+    }
+  ]
+}

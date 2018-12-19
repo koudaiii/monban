@@ -1,0 +1,24 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: monban
+webhooks:
+  - name: monban.default.service
+    rules:
+      - apiGroups:
+          - apps
+          - extensions
+        apiVersions:
+          - v1
+          - v1beta1
+        operations:
+          - UPDATE
+        resources:
+          - deployments
+    failurePolicy: Ignore
+    clientConfig:
+      service:
+        namespace: default
+        name: monban
+        path: /deployments
+      caBundle: __CA__

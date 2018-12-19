@@ -1,0 +1,16 @@
+{
+  "CN": "koudaiii",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "JP",
+      "L": "Japan",
+      "O": "koudaiii",
+      "OU": "CA",
+      "ST": "Japan"
+    }
+  ]
+}
