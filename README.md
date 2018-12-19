@@ -33,8 +33,8 @@ Please refer to [Admission Webhooks](https://kubernetes.io/docs/reference/access
 
 ## Requirements
 
-- kubectl
-- cfssl
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+- [cfssl](https://coreos.com/os/docs/latest/generate-self-signed-certificates.html)
 
 ```console
 # for Mac
