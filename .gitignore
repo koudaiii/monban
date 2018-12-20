@@ -11,5 +11,6 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 vendor/
-certs/dst/*.*
+certs/dst/*.pem
+certs/dst/*.csr
 webhook
