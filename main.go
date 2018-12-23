@@ -21,8 +21,10 @@ const (
 	MonbanKey = "koudaiii/monban"
 )
 
+// you need clientset to get Namespace from deployments
 var clientset *kubernetes.Clientset
 
+// toAdmissionResponse decide response Result and Message
 func toAdmissionResponse(allowed bool, err error) *v1beta1.AdmissionResponse {
 	response := &v1beta1.AdmissionResponse{
 		Allowed: allowed,
@@ -35,7 +37,7 @@ func toAdmissionResponse(allowed bool, err error) *v1beta1.AdmissionResponse {
 	return response
 }
 
-// Disallow edit/delete deployments from specific annotations.
+// Disallow edit deployments from specific annotations.
 func admitDeployments(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
 	log.Println("admitting deployments")
 	if expect, actual := "deployments", ar.Request.Resource.Resource; expect != actual {
