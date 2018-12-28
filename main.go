@@ -65,7 +65,7 @@ func admitDeployments(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
 	if ns.ObjectMeta.Annotations[MonbanKey] == "enabled" {
 		var msg string
 		msg = "%s is locked in %s\n"
-		msg = msg + "If you want to unlock, Please run command `kubectl annotate namespace/%s %s-`"
+		msg = msg + "If you want to unlock, please run command `kubectl annotate namespace/%s %s-`"
 		err := fmt.Errorf(msg, name, namespace, namespace, MonbanKey)
 		log.Println(err)
 		return toAdmissionResponse(false, err)
